@@ -1,0 +1,6 @@
+{"@timestamp":"2022-03-02T15:32:43+01:00","level":"INFO","message":"Initializing Mongo!"}
+{"@timestamp":"2022-03-02T15:32:43+01:00","level":"INFO","message":"Establishing mongoDB connection with given credentials..."}
+{"@timestamp":"2022-03-02T15:32:43+01:00","level":"INFO","message":"Connecting to MongoDB..."}
+{"@timestamp":"2022-03-02T15:32:43+01:00","level":"INFO","message":"Confirming MongoDB Connection..."}
+{"@timestamp":"2022-03-02T15:32:44+01:00","level":"INFO","message":"Establishing Database collections and indexes..."}
+connect to http://localhost:8080/ for GraphQL playground

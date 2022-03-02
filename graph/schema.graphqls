@@ -1,0 +1,28 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+type User {
+  id: ID!
+  name: String!
+  is_Verified: Boolean
+  bank_name: String!
+  bank_account_number: String!
+}
+
+input UserInput {
+  id: String!
+  name: String!
+  is_Verified: Boolean
+  bank_name: String!
+  bank_account_number: String!
+}
+
+type Mutation {
+  upsertUser(input: UserInput!): User!
+}
+
+# type Query {
+#   user(id:ID!): User!
+#   users: [User!]
+# }
