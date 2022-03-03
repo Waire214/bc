@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/texttheater/golang-levenshtein/levenshtein"
 	"go.mongodb.org/mongo-driver/bson"
@@ -63,46 +64,12 @@ func (collection *userInfra) AddUser(user model.UserInput) (*model.User, error) 
 		dbUser,
 	)
 	if err != nil {
+		helper.LogEvent("ERROR", helper.MongoDBError)
 		return &model.User{}, helper.ErrorMessage(helper.MongoDBError, err.Error())
 	}
 
 	helper.LogEvent("INFO", "Persisting new user successful")
-	// newUser := model.User(user)
 	return &newUser, nil
-}
-
-func ValidateData(user model.UserInput) (string, *bool) {
-	var payStackData paystack
-
-	req, err := http.Get("https://api.paystack.co/bank/resolve?account_number=" + user.BankAccountNumber + "&bank_code=" + user.BankCode)
-	if err != nil {
-		log.Fatal(err)
-	}
-	req.Header.Set("Authorization", "Bearer sk_test_87f0bed09dbdc1b48465b3835130184eeda71589")
-
-	body, err := ioutil.ReadAll(req.Body)
-	if err != nil {
-		log.Fatalln(err)
-	}
-	json.Unmarshal(body, &payStackData)
-
-	if user.Name != payStackData.Data.AccountName {
-		source = user.Name
-		target = payStackData.Data.AccountName
-		distance := levenshtein.DistanceForStrings([]rune(source), []rune(target), levenshtein.DefaultOptions)
-		if distance <= 2 {
-			val = true
-			user.IsVerified = &val
-			log.Println(target)
-			log.Println(source)
-			return source, user.IsVerified
-		} else {
-			val = false
-			user.IsVerified = &val
-			return source, user.IsVerified
-		}
-	}
-	return user.Name, user.IsVerified
 }
 
 func (collection *userInfra) GetUser(accountNumber string, bankCode string) (string, error) {
@@ -112,42 +79,54 @@ func (collection *userInfra) GetUser(accountNumber string, bankCode string) (str
 	filter := bson.M{"bankcode": bankCode, "bankaccountnumber": accountNumber}
 	err := collection.UserCollection.FindOne(ctx, filter).Decode(&user)
 
-	log.Println(user)
 	if err != nil || user == (User{}) {
-		log.Println(helper.ErrorMessage(helper.NoRecordFound, helper.NoRecordFound))
-
+		helper.LogEvent("ERROR", helper.NoRecordFound)
 		return "name record not found", helper.ErrorMessage(helper.NoRecordFound, helper.NoRecordFound)
 	}
-	
 
 	helper.LogEvent("INFO", "Retrieving user info with query bank_code: "+bankCode+" and bank_account_number "+accountNumber+" completed successfully")
 	return user.BankName, nil
 }
 
-// func (r *mutationResolver) UpsertUser(ctx context.Context, input model.UserInput) (*model.User, error) {
-// 	genReference := uuid.New().String()
-// 	user := model.UserInput{
-// 		ID:                genReference,
-// 		Name:              input.Name,
-// 		BankName:          input.BankName,
-// 		BankCode:          input.BankCode,
-// 		BankAccountNumber: input.BankAccountNumber,
-// 	}
-// 	result, err := r.userService.AddUser(user)
-// 	if err != nil {
-// 		log.Println(err)
-// 		return &model.User{}, err
-// 	}
+func ValidateData(user model.UserInput) (string, *bool) {
+	var payStackData paystack
+	url := "https://api.paystack.co/bank/resolve?account_number=" + user.BankAccountNumber + "&bank_code=" + user.BankCode
+	client := http.Client{}
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		helper.LogEvent("ERROR", err.Error())
+		log.Fatalln(err)
+	}
+	req.Header = http.Header{
+		"Content-Type":  []string{"application/json"},
+		"Authorization": []string{helper.Config.BearerToken},
+	}
+	res, err := client.Do(req)
+	if err != nil {
+		helper.LogEvent("ERROR", err.Error())
+		log.Fatalln(err)
+	}
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		helper.LogEvent("ERROR", err.Error())
+		log.Fatalln(err)
+	}
+	json.Unmarshal(body, &payStackData)
 
-// 	return result, nil
-// }
-
-// func (r *queryResolver) User(ctx context.Context, bankAcountNumber string, bank_Code string) (string, error) {
-// 	// panic(fmt.Errorf("not implemented"))
-// 	result, err := r.userService.GetUser(bankAcountNumber, bank_Code)
-// 	if err != nil {
-// 		log.Println(err.Error())
-// 		return "", err
-// 	}
-// 	return result, nil
-// }
+	if user.Name != payStackData.Data.AccountName {
+		source = user.Name
+		target = payStackData.Data.AccountName
+		distance := levenshtein.DistanceForStrings([]rune(strings.ToUpper(source)), []rune(target), levenshtein.DefaultOptions)
+		if distance <= 2 {
+			val = true
+			user.IsVerified = &val
+			return source, user.IsVerified
+		}
+		if distance >= 3 {
+			val = false
+			user.IsVerified = &val
+			return source, user.IsVerified
+		}
+	}
+	return user.Name, user.IsVerified
+}

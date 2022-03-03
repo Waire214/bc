@@ -23,6 +23,7 @@ type ConfigStruct struct {
 	LogDir             string `mapstructure:"log_dir"`
 	ExternalConfigPath string `mapstructure:"external_config_path"`
 	PageLimit          string `mapstructure:"page_limit"`
+	BearerToken        string `mapstructure:"bearerToken"`
 }
 
 // var (

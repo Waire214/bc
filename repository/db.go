@@ -42,7 +42,6 @@ func ConnectToMongo(dbType, dbUsername, dbPassword, dbHost, dbPort, authdb, dbna
 		return &mongo.Database{}, err
 	}
 
-	//helper.LogEvent("Info", "Connected to MongoDB!")
 	helper.LogEvent("INFO", "Establishing Database collections and indexes...")
 
 	conn := client.Database(dbname)
@@ -50,6 +49,7 @@ func ConnectToMongo(dbType, dbUsername, dbPassword, dbHost, dbPort, authdb, dbna
 	return conn, nil
 }
 
+// checks for uniqueness of data
 func CreateIndex(collection *mongo.Collection, field string, unique bool) bool {
 
 	mod := mongo.IndexModel{
@@ -63,13 +63,13 @@ func CreateIndex(collection *mongo.Collection, field string, unique bool) bool {
 	_, err := collection.Indexes().CreateOne(ctx, mod)
 	if err != nil {
 		helper.LogEvent("ERROR", err.Error())
-		fmt.Println(err.Error())
-
+		helper.LogEvent("ERROR", err.Error())
 		return false
 	}
 	return true
 }
 
+// for pagination
 func GetPage(page string) (*options.FindOptions, error) {
 	if page == "all" {
 		return nil, nil
@@ -77,6 +77,7 @@ func GetPage(page string) (*options.FindOptions, error) {
 	var limit, e = strconv.ParseInt(helper.Config.PageLimit, 10, 64)
 	var pageSize, ee = strconv.ParseInt(page, 10, 64)
 	if e != nil || ee != nil {
+		helper.LogEvent("ERROR", e.Error())
 		return nil, helper.ErrorMessage(helper.NoRecordFound, "Error in page-size or limit-size.")
 	}
 	findOptions := options.Find().SetLimit(limit).SetSkip(limit * (pageSize - 1))
