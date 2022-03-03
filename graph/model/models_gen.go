@@ -7,6 +7,7 @@ type User struct {
 	Name              string `json:"name"`
 	IsVerified        *bool  `json:"is_Verified"`
 	BankName          string `json:"bank_name"`
+	BankCode          string `json:"bank_code"`
 	BankAccountNumber string `json:"bank_account_number"`
 }
 
@@ -15,5 +16,6 @@ type UserInput struct {
 	Name              string `json:"name"`
 	IsVerified        *bool  `json:"is_Verified"`
 	BankName          string `json:"bank_name"`
+	BankCode          string `json:"bank_code"`
 	BankAccountNumber string `json:"bank_account_number"`
 }

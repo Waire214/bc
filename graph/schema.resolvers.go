@@ -18,6 +18,7 @@ func (r *mutationResolver) UpsertUser(ctx context.Context, input model.UserInput
 		ID:                genReference,
 		Name:              input.Name,
 		BankName:          input.BankName,
+		BankCode:          input.BankCode,
 		BankAccountNumber: input.BankAccountNumber,
 	}
 	result, err := r.userService.AddUser(user)
@@ -25,11 +26,6 @@ func (r *mutationResolver) UpsertUser(ctx context.Context, input model.UserInput
 		fmt.Println(err)
 	}
 
-	// r.db.Collection("user").InsertOne(
-	// 	ctx,
-	// 	user,
-	// )
-	// result := model.User(user)
 	return result, nil
 }
 

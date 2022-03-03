@@ -8,9 +8,12 @@ require (
 )
 
 require (
+	github.com/go-chi/chi v1.5.4
+	github.com/go-chi/render v1.0.1
 	github.com/go-playground/validator/v10 v10.10.0
 	github.com/google/uuid v1.3.0
 	github.com/spf13/viper v1.10.1
+	github.com/texttheater/golang-levenshtein/levenshtein v0.0.0-20200805054039-cae8b0eaed6c
 	go.mongodb.org/mongo-driver v1.8.3
 )
 

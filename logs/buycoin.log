@@ -1,6 +1,40 @@
-{"@timestamp":"2022-03-02T15:32:43+01:00","level":"INFO","message":"Initializing Mongo!"}
-{"@timestamp":"2022-03-02T15:32:43+01:00","level":"INFO","message":"Establishing mongoDB connection with given credentials..."}
-{"@timestamp":"2022-03-02T15:32:43+01:00","level":"INFO","message":"Connecting to MongoDB..."}
-{"@timestamp":"2022-03-02T15:32:43+01:00","level":"INFO","message":"Confirming MongoDB Connection..."}
-{"@timestamp":"2022-03-02T15:32:44+01:00","level":"INFO","message":"Establishing Database collections and indexes..."}
+{"@timestamp":"2022-03-03T16:30:12+01:00","level":"INFO","message":"Persisting new user"}
+{"@timestamp":"2022-03-03T16:30:13+01:00","level":"INFO","message":"Persisting new user successful"}
+{"@timestamp":"2022-03-03T16:37:55+01:00","level":"INFO","message":"Persisting new user"}
+Get "https://api.paystack.co/bank/resolve?account_number=0001234567&bank_code=058": dial tcp: lookup api.paystack.co: no such host
+{"@timestamp":"2022-03-03T16:38:09+01:00","level":"INFO","message":"Initializing Mongo!"}
+{"@timestamp":"2022-03-03T16:38:09+01:00","level":"INFO","message":"Establishing mongoDB connection with given credentials..."}
+{"@timestamp":"2022-03-03T16:38:09+01:00","level":"INFO","message":"Connecting to MongoDB..."}
+{"@timestamp":"2022-03-03T16:38:09+01:00","level":"INFO","message":"Confirming MongoDB Connection..."}
+{"@timestamp":"2022-03-03T16:38:09+01:00","level":"INFO","message":"Establishing Database collections and indexes..."}
 connect to http://localhost:8080/ for GraphQL playground
+{"@timestamp":"2022-03-03T16:38:18+01:00","level":"INFO","message":"Persisting new user"}
+Get "https://api.paystack.co/bank/resolve?account_number=0001234567&bank_code=058": dial tcp: lookup api.paystack.co: no such host
+{"@timestamp":"2022-03-03T16:38:48+01:00","level":"INFO","message":"Initializing Mongo!"}
+{"@timestamp":"2022-03-03T16:38:48+01:00","level":"INFO","message":"Establishing mongoDB connection with given credentials..."}
+{"@timestamp":"2022-03-03T16:38:48+01:00","level":"INFO","message":"Connecting to MongoDB..."}
+{"@timestamp":"2022-03-03T16:38:48+01:00","level":"INFO","message":"Confirming MongoDB Connection..."}
+{"@timestamp":"2022-03-03T16:38:48+01:00","level":"INFO","message":"Establishing Database collections and indexes..."}
+connect to http://localhost:8080/ for GraphQL playground
+{"@timestamp":"2022-03-03T16:38:56+01:00","level":"INFO","message":"Persisting new user"}
+Get "https://api.paystack.co/bank/resolve?account_number=0001234567&bank_code=058": dial tcp: lookup api.paystack.co: no such host
+{"@timestamp":"2022-03-03T16:39:41+01:00","level":"INFO","message":"Initializing Mongo!"}
+{"@timestamp":"2022-03-03T16:39:41+01:00","level":"INFO","message":"Establishing mongoDB connection with given credentials..."}
+{"@timestamp":"2022-03-03T16:39:41+01:00","level":"INFO","message":"Connecting to MongoDB..."}
+{"@timestamp":"2022-03-03T16:39:41+01:00","level":"INFO","message":"Confirming MongoDB Connection..."}
+{"@timestamp":"2022-03-03T16:39:41+01:00","level":"INFO","message":"Establishing Database collections and indexes..."}
+connect to http://localhost:8080/ for GraphQL playground
+{"@timestamp":"2022-03-03T16:39:52+01:00","level":"INFO","message":"Persisting new user"}
+Get "https://api.paystack.co/bank/resolve?account_number=0001234567&bank_code=058": dial tcp: lookup api.paystack.co: no such host
+{"@timestamp":"2022-03-03T16:40:09+01:00","level":"INFO","message":"Initializing Mongo!"}
+{"@timestamp":"2022-03-03T16:40:09+01:00","level":"INFO","message":"Establishing mongoDB connection with given credentials..."}
+{"@timestamp":"2022-03-03T16:40:09+01:00","level":"INFO","message":"Connecting to MongoDB..."}
+{"@timestamp":"2022-03-03T16:40:09+01:00","level":"INFO","message":"Confirming MongoDB Connection..."}
+{"@timestamp":"2022-03-03T16:40:09+01:00","level":"INFO","message":"Establishing Database collections and indexes..."}
+connect to http://localhost:8080/ for GraphQL playground
+{"@timestamp":"2022-03-03T16:40:16+01:00","level":"INFO","message":"Persisting new user"}
+{"@timestamp":"2022-03-03T16:40:41+01:00","level":"INFO","message":"Persisting new user successful"}
+{"@timestamp":"2022-03-03T16:40:48+01:00","level":"INFO","message":"Persisting new user"}
+{"@timestamp":"2022-03-03T16:40:49+01:00","level":"INFO","message":"Persisting new user successful"}
+{"@timestamp":"2022-03-03T16:42:21+01:00","level":"INFO","message":"Persisting new user"}
+{"@timestamp":"2022-03-03T16:42:22+01:00","level":"INFO","message":"Persisting new user successful"}

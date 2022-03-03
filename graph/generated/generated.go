@@ -50,6 +50,7 @@ type ComplexityRoot struct {
 
 	User struct {
 		BankAccountNumber func(childComplexity int) int
+		BankCode          func(childComplexity int) int
 		BankName          func(childComplexity int) int
 		ID                func(childComplexity int) int
 		IsVerified        func(childComplexity int) int
@@ -94,6 +95,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.User.BankAccountNumber(childComplexity), true
+
+	case "User.bank_code":
+		if e.complexity.User.BankCode == nil {
+			break
+		}
+
+		return e.complexity.User.BankCode(childComplexity), true
 
 	case "User.bank_name":
 		if e.complexity.User.BankName == nil {
@@ -196,6 +204,7 @@ type User {
   name: String!
   is_Verified: Boolean
   bank_name: String!
+  bank_code: String!
   bank_account_number: String!
 }
 
@@ -204,6 +213,7 @@ input UserInput {
   name: String!
   is_Verified: Boolean
   bank_name: String!
+  bank_code: String!
   bank_account_number: String!
 }
 
@@ -211,10 +221,7 @@ type Mutation {
   upsertUser(input: UserInput!): User!
 }
 
-# type Query {
-#   user(id:ID!): User!
-#   users: [User!]
-# }`, BuiltIn: false},
+`, BuiltIn: false},
 }
 var parsedSchema = gqlparser.MustLoadSchema(sources...)
 
@@ -524,6 +531,41 @@ func (ec *executionContext) _User_bank_name(ctx context.Context, field graphql.C
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
 		return obj.BankName, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _User_bank_code(ctx context.Context, field graphql.CollectedField, obj *model.User) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "User",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BankCode, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1802,6 +1844,14 @@ func (ec *executionContext) unmarshalInputUserInput(ctx context.Context, obj int
 			if err != nil {
 				return it, err
 			}
+		case "bank_code":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("bank_code"))
+			it.BankCode, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		case "bank_account_number":
 			var err error
 
@@ -1948,6 +1998,16 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 		case "bank_name":
 			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._User_bank_name(ctx, field, obj)
+			}
+
+			out.Values[i] = innerFunc(ctx)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "bank_code":
+			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._User_bank_code(ctx, field, obj)
 			}
 
 			out.Values[i] = innerFunc(ctx)
