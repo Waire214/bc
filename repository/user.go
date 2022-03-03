@@ -11,6 +11,7 @@ import (
 	"net/http"
 
 	"github.com/texttheater/golang-levenshtein/levenshtein"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -20,6 +21,15 @@ var (
 	target string
 	val    bool
 )
+
+type User struct {
+	ID                string `json:"id" bson:"id"`
+	Name              string `json:"name" bson:"name"`
+	IsVerified        *bool  `json:"is_Verified" bson:"isverified"`
+	BankName          string `json:"bank_name" bson:"bankname"`
+	BankCode          string `json:"bank_code" bson:"bankcode"`
+	BankAccountNumber string `json:"bank_account_number" bson:"bankaccountnumber"`
+}
 
 type paystack struct {
 	Status  string `json:"status"`
@@ -46,17 +56,18 @@ func (collection *userInfra) AddUser(user model.UserInput) (*model.User, error) 
 	helper.LogEvent("INFO", "Persisting new user")
 
 	user.Name, user.IsVerified = ValidateData(user)
-
+	newUser := model.User(user)
+	dbUser := User(user)
 	_, err := collection.UserCollection.InsertOne(
 		ctx,
-		user,
+		dbUser,
 	)
 	if err != nil {
 		return &model.User{}, helper.ErrorMessage(helper.MongoDBError, err.Error())
 	}
 
 	helper.LogEvent("INFO", "Persisting new user successful")
-	newUser := model.User(user)
+	// newUser := model.User(user)
 	return &newUser, nil
 }
 
@@ -93,3 +104,50 @@ func ValidateData(user model.UserInput) (string, *bool) {
 	}
 	return user.Name, user.IsVerified
 }
+
+func (collection *userInfra) GetUser(accountNumber string, bankCode string) (string, error) {
+	helper.LogEvent("INFO", "Retrieving user info with query bank_code: "+bankCode+" and bank_account_number "+accountNumber)
+
+	var user = User{}
+	filter := bson.M{"bankcode": bankCode, "bankaccountnumber": accountNumber}
+	err := collection.UserCollection.FindOne(ctx, filter).Decode(&user)
+
+	log.Println(user)
+	if err != nil || user == (User{}) {
+		log.Println(helper.ErrorMessage(helper.NoRecordFound, helper.NoRecordFound))
+
+		return "name record not found", helper.ErrorMessage(helper.NoRecordFound, helper.NoRecordFound)
+	}
+	
+
+	helper.LogEvent("INFO", "Retrieving user info with query bank_code: "+bankCode+" and bank_account_number "+accountNumber+" completed successfully")
+	return user.BankName, nil
+}
+
+// func (r *mutationResolver) UpsertUser(ctx context.Context, input model.UserInput) (*model.User, error) {
+// 	genReference := uuid.New().String()
+// 	user := model.UserInput{
+// 		ID:                genReference,
+// 		Name:              input.Name,
+// 		BankName:          input.BankName,
+// 		BankCode:          input.BankCode,
+// 		BankAccountNumber: input.BankAccountNumber,
+// 	}
+// 	result, err := r.userService.AddUser(user)
+// 	if err != nil {
+// 		log.Println(err)
+// 		return &model.User{}, err
+// 	}
+
+// 	return result, nil
+// }
+
+// func (r *queryResolver) User(ctx context.Context, bankAcountNumber string, bank_Code string) (string, error) {
+// 	// panic(fmt.Errorf("not implemented"))
+// 	result, err := r.userService.GetUser(bankAcountNumber, bank_Code)
+// 	if err != nil {
+// 		log.Println(err.Error())
+// 		return "", err
+// 	}
+// 	return result, nil
+// }

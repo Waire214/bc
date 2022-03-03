@@ -25,11 +25,11 @@ func main() {
 
 	db := startMongoDB()
 	router := chi.NewRouter()
-	// router.Use(Middleware)
 
 	userRepository := repository.NewUserRepository(db)
 	userService := services.NewUserService(userRepository)
 	resolver := graph.NewResolverHandler(userService)
+	
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = defaultPort
@@ -62,28 +62,3 @@ func startMongoDB() *mongo.Database {
 	return db
 }
 
-// func Middleware(next http.Handler) http.Handler {
-// 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-// 		BearerAuthHeader(w, r)
-// 		next.ServeHTTP(w, r)
-// 	})
-// }
-
-// func BearerAuthHeader(w http.ResponseWriter, r *http.Request) (string, error) {
-
-// 	header := r.Header.Get("Authorization")
-// 	parts := strings.Split(header, "Bearer")
-// 	log.Println(parts)
-// 	if len(parts) != 2 {
-// 		log.Println("Malformed token")
-// 		w.WriteHeader(http.StatusUnauthorized)
-// 		w.Write([]byte("Malformed Token"))
-// 	}
-// 	token := strings.TrimSpace(parts[1])
-// 	if len(token) < 1 {
-// 		log.Println(errors.New("invalid header: length less than 1"))
-// 		w.WriteHeader(http.StatusUnauthorized)
-// 		w.Write([]byte("Malformed Token"))
-// 	}
-// 	return token, nil
-// }

@@ -18,3 +18,7 @@ func NewUserService(userRepository ports.UserRepository) *userService {
 func (serve *userService) AddUser(user model.UserInput) (*model.User, error) {
 	return serve.userRepository.AddUser(user)
 }
+
+func (serve *userService) GetUser(accountNumber string, bankCode string) (string, error) {
+	return serve.userRepository.GetUser(accountNumber, bankCode)
+}

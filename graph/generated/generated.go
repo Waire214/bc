@@ -9,6 +9,7 @@ import (
 	"errors"
 	"strconv"
 	"sync"
+	"sync/atomic"
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
@@ -35,6 +36,7 @@ type Config struct {
 
 type ResolverRoot interface {
 	Mutation() MutationResolver
+	Query() QueryResolver
 }
 
 type DirectiveRoot struct {
@@ -46,6 +48,7 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
+		BankName func(childComplexity int, bankAcountNumber string, bankCode string) int
 	}
 
 	User struct {
@@ -60,6 +63,9 @@ type ComplexityRoot struct {
 
 type MutationResolver interface {
 	UpsertUser(ctx context.Context, input model.UserInput) (*model.User, error)
+}
+type QueryResolver interface {
+	BankName(ctx context.Context, bankAcountNumber string, bankCode string) (string, error)
 }
 
 type executableSchema struct {
@@ -88,6 +94,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.UpsertUser(childComplexity, args["input"].(model.UserInput)), true
+
+	case "Query.bankName":
+		if e.complexity.Query.BankName == nil {
+			break
+		}
+
+		args, err := ec.field_Query_bankName_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.BankName(childComplexity, args["bankAcountNumber"].(string), args["bankCode"].(string)), true
 
 	case "User.bank_account_number":
 		if e.complexity.User.BankAccountNumber == nil {
@@ -221,7 +239,9 @@ type Mutation {
   upsertUser(input: UserInput!): User!
 }
 
-`, BuiltIn: false},
+type Query {
+  bankName(bankAcountNumber:String!, bankCode:String!): String!
+}`, BuiltIn: false},
 }
 var parsedSchema = gqlparser.MustLoadSchema(sources...)
 
@@ -256,6 +276,30 @@ func (ec *executionContext) field_Query___type_args(ctx context.Context, rawArgs
 		}
 	}
 	args["name"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_bankName_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["bankAcountNumber"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("bankAcountNumber"))
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["bankAcountNumber"] = arg0
+	var arg1 string
+	if tmp, ok := rawArgs["bankCode"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("bankCode"))
+		arg1, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["bankCode"] = arg1
 	return args, nil
 }
 
@@ -337,6 +381,48 @@ func (ec *executionContext) _Mutation_upsertUser(ctx context.Context, field grap
 	res := resTmp.(*model.User)
 	fc.Result = res
 	return ec.marshalNUser2ᚖcoinᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_bankName(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_bankName_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().BankName(rctx, args["bankAcountNumber"].(string), args["bankCode"].(string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -1933,6 +2019,29 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Query")
+		case "bankName":
+			field := field
+
+			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_bankName(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx, innerFunc)
+			}
+
+			out.Concurrently(i, func() graphql.Marshaler {
+				return rrm(innerCtx)
+			})
 		case "__type":
 			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Query___type(ctx, field)

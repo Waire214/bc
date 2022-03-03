@@ -24,3 +24,6 @@ type Mutation {
   upsertUser(input: UserInput!): User!
 }
 
+type Query {
+  bankName(bankAcountNumber:String!, bankCode:String!): String!
+}

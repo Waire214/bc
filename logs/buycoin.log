@@ -1,40 +1,22 @@
-{"@timestamp":"2022-03-03T16:30:12+01:00","level":"INFO","message":"Persisting new user"}
-{"@timestamp":"2022-03-03T16:30:13+01:00","level":"INFO","message":"Persisting new user successful"}
-{"@timestamp":"2022-03-03T16:37:55+01:00","level":"INFO","message":"Persisting new user"}
-Get "https://api.paystack.co/bank/resolve?account_number=0001234567&bank_code=058": dial tcp: lookup api.paystack.co: no such host
-{"@timestamp":"2022-03-03T16:38:09+01:00","level":"INFO","message":"Initializing Mongo!"}
-{"@timestamp":"2022-03-03T16:38:09+01:00","level":"INFO","message":"Establishing mongoDB connection with given credentials..."}
-{"@timestamp":"2022-03-03T16:38:09+01:00","level":"INFO","message":"Connecting to MongoDB..."}
-{"@timestamp":"2022-03-03T16:38:09+01:00","level":"INFO","message":"Confirming MongoDB Connection..."}
-{"@timestamp":"2022-03-03T16:38:09+01:00","level":"INFO","message":"Establishing Database collections and indexes..."}
+{"@timestamp":"2022-03-03T18:57:24+01:00","level":"INFO","message":"Initializing Mongo!"}
+{"@timestamp":"2022-03-03T18:57:24+01:00","level":"INFO","message":"Establishing mongoDB connection with given credentials..."}
+{"@timestamp":"2022-03-03T18:57:24+01:00","level":"INFO","message":"Connecting to MongoDB..."}
+{"@timestamp":"2022-03-03T18:57:24+01:00","level":"INFO","message":"Confirming MongoDB Connection..."}
+{"@timestamp":"2022-03-03T18:57:25+01:00","level":"INFO","message":"Establishing Database collections and indexes..."}
 connect to http://localhost:8080/ for GraphQL playground
-{"@timestamp":"2022-03-03T16:38:18+01:00","level":"INFO","message":"Persisting new user"}
-Get "https://api.paystack.co/bank/resolve?account_number=0001234567&bank_code=058": dial tcp: lookup api.paystack.co: no such host
-{"@timestamp":"2022-03-03T16:38:48+01:00","level":"INFO","message":"Initializing Mongo!"}
-{"@timestamp":"2022-03-03T16:38:48+01:00","level":"INFO","message":"Establishing mongoDB connection with given credentials..."}
-{"@timestamp":"2022-03-03T16:38:48+01:00","level":"INFO","message":"Connecting to MongoDB..."}
-{"@timestamp":"2022-03-03T16:38:48+01:00","level":"INFO","message":"Confirming MongoDB Connection..."}
-{"@timestamp":"2022-03-03T16:38:48+01:00","level":"INFO","message":"Establishing Database collections and indexes..."}
+{"@timestamp":"2022-03-03T18:57:29+01:00","level":"INFO","message":"Retrieving user info with query bank_code: 0001234567 and bank_account_number 058"}
+{  <nil>   }
+{ <nil> }
+{ <nil> }
+{"@timestamp":"2022-03-03T19:01:13+01:00","level":"INFO","message":"Initializing Mongo!"}
+{"@timestamp":"2022-03-03T19:01:13+01:00","level":"INFO","message":"Establishing mongoDB connection with given credentials..."}
+{"@timestamp":"2022-03-03T19:01:13+01:00","level":"INFO","message":"Connecting to MongoDB..."}
+{"@timestamp":"2022-03-03T19:01:13+01:00","level":"INFO","message":"Confirming MongoDB Connection..."}
+{"@timestamp":"2022-03-03T19:01:13+01:00","level":"INFO","message":"Establishing Database collections and indexes..."}
 connect to http://localhost:8080/ for GraphQL playground
-{"@timestamp":"2022-03-03T16:38:56+01:00","level":"INFO","message":"Persisting new user"}
-Get "https://api.paystack.co/bank/resolve?account_number=0001234567&bank_code=058": dial tcp: lookup api.paystack.co: no such host
-{"@timestamp":"2022-03-03T16:39:41+01:00","level":"INFO","message":"Initializing Mongo!"}
-{"@timestamp":"2022-03-03T16:39:41+01:00","level":"INFO","message":"Establishing mongoDB connection with given credentials..."}
-{"@timestamp":"2022-03-03T16:39:41+01:00","level":"INFO","message":"Connecting to MongoDB..."}
-{"@timestamp":"2022-03-03T16:39:41+01:00","level":"INFO","message":"Confirming MongoDB Connection..."}
-{"@timestamp":"2022-03-03T16:39:41+01:00","level":"INFO","message":"Establishing Database collections and indexes..."}
-connect to http://localhost:8080/ for GraphQL playground
-{"@timestamp":"2022-03-03T16:39:52+01:00","level":"INFO","message":"Persisting new user"}
-Get "https://api.paystack.co/bank/resolve?account_number=0001234567&bank_code=058": dial tcp: lookup api.paystack.co: no such host
-{"@timestamp":"2022-03-03T16:40:09+01:00","level":"INFO","message":"Initializing Mongo!"}
-{"@timestamp":"2022-03-03T16:40:09+01:00","level":"INFO","message":"Establishing mongoDB connection with given credentials..."}
-{"@timestamp":"2022-03-03T16:40:09+01:00","level":"INFO","message":"Connecting to MongoDB..."}
-{"@timestamp":"2022-03-03T16:40:09+01:00","level":"INFO","message":"Confirming MongoDB Connection..."}
-{"@timestamp":"2022-03-03T16:40:09+01:00","level":"INFO","message":"Establishing Database collections and indexes..."}
-connect to http://localhost:8080/ for GraphQL playground
-{"@timestamp":"2022-03-03T16:40:16+01:00","level":"INFO","message":"Persisting new user"}
-{"@timestamp":"2022-03-03T16:40:41+01:00","level":"INFO","message":"Persisting new user successful"}
-{"@timestamp":"2022-03-03T16:40:48+01:00","level":"INFO","message":"Persisting new user"}
-{"@timestamp":"2022-03-03T16:40:49+01:00","level":"INFO","message":"Persisting new user successful"}
-{"@timestamp":"2022-03-03T16:42:21+01:00","level":"INFO","message":"Persisting new user"}
-{"@timestamp":"2022-03-03T16:42:22+01:00","level":"INFO","message":"Persisting new user successful"}
+{"@timestamp":"2022-03-03T19:01:18+01:00","level":"INFO","message":"Retrieving user info with query bank_code: 058 and bank_account_number 0001234567"}
+{24f7eb96-2db3-4271-b827-7184e9868f7c Oluwatosin Oghenewaire Thompson 0xc00022f90a Access bank 058 0001234567}
+{"@timestamp":"2022-03-03T19:01:18+01:00","level":"INFO","message":"Retrieving user info with query bank_code: 058 and bank_account_number 0001234567 completed successfully"}
+{"@timestamp":"2022-03-03T19:02:34+01:00","level":"INFO","message":"Retrieving user info with query bank_code: 058 and bank_account_number 0001234567"}
+{24f7eb96-2db3-4271-b827-7184e9868f7c Oluwatosin Oghenewaire Thompson 0xc0002525f8 Access bank 058 0001234567}
+{"@timestamp":"2022-03-03T19:02:34+01:00","level":"INFO","message":"Retrieving user info with query bank_code: 058 and bank_account_number 0001234567 completed successfully"}
